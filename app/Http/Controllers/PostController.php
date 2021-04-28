@@ -20,4 +20,23 @@ class PostController extends Controller
     }
     return view('posts.show', compact('post'));
   }
+
+  public function create()
+  {
+    return view('posts.create');
+  }
+
+  public function store(Request $request)
+  {
+    
+    $data = $request->validate([
+      'title' => 'required|string|max:255|unique:posts',
+      'body' =>  ['required', 'string', 'max:1000'],
+      'is_published' => 'sometimes'
+    ]);
+
+    $newPost = Post::create($data);
+
+    return redirect('/posts');
+  }
 }
